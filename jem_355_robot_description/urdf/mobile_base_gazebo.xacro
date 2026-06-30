@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- Adding the gazebo plugin for differential drive. You can find the necessary tags in the DiffDrive.hh file
+    found in the gz-sim repository at https://github.com/gazebosim/gz-sim/blob/gz-sim6/src/systems/diff_drive/DiffDrive.hh -->
+
+    <gazebo>
+        <plugin
+            filename="gz-sim-joint-controller-system"
+            name="gz::sim::systems::JointController">
+
+            <joint_name>left_wheel_joint</joint_name>
+
+            <topic>/left_wheel/cmd_vel</topic>
+
+            <use_force_commands>false</use_force_commands>
+
+        </plugin>
+    </gazebo>
+
+    <gazebo>
+        <plugin
+            filename="gz-sim-joint-controller-system"
+            name="gz::sim::systems::JointController">
+
+            <joint_name>right_wheel_joint</joint_name>
+
+            <topic>/right_wheel/cmd_vel</topic>
+
+            <use_force_commands>false</use_force_commands>
+
+        </plugin>
+    </gazebo>
+
+
+    <gazebo>
+        <plugin
+            filename="gz-sim-joint-state-publisher-system"
+            name="gz::sim::systems::JointStatePublisher">
+        </plugin>
+    </gazebo>
+
+</robot>

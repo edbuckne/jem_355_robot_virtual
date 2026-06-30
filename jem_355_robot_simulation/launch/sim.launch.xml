@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- Launch argument -->
+    <arg name="use_rviz" default="false"/>
+
+    <let name="urdf_path" 
+         value="$(find-pkg-share jem_355_robot_description)/urdf/jem_355_robot.urdf.xacro" />
+    <let name="gazebo_config_path" 
+         value="$(find-pkg-share jem_355_robot_simulation)/config/gazebo_bridge.yaml" />
+    <let name="rviz_config_path"
+         value="$(find-pkg-share jem_355_robot_description)/rviz/urdf_config.rviz" /> 
+
+    <!-- Start the robot state publisher -->
+    <node pkg="robot_state_publisher" exec="robot_state_publisher">
+        <param name="robot_description"
+               value="$(command 'xacro $(var urdf_path)')" />
+    </node>
+    <!-- Include the Gazebo simulation launch file with empty world and start simulation -->
+    <include file="$(find-pkg-share ros_gz_sim)/launch/gz_sim.launch.py">
+        <arg name="gz_args" value="empty.sdf -r" />
+    </include>
+    <!-- Spawn the robot in the simulation -->
+    <node pkg="ros_gz_sim" exec="create" args="-topic robot_description" />
+    <!-- Start the Gazebo bridge -->
+    <node pkg="ros_gz_bridge" exec="parameter_bridge">
+        <param name="config_file"
+            value="$(var gazebo_config_path)" />
+    </node>
+    <!-- Start RViz -->
+    <node if="$(var use_rviz)" pkg="rviz2" exec="rviz2" args="-d $(var rviz_config_path)" />
+</launch>
