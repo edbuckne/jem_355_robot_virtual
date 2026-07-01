@@ -26,6 +26,13 @@
         <param name="config_file"
             value="$(var gazebo_config_path)" />
     </node>
+    <!-- Start the clock for the simulation -->
+    <node
+        pkg="ros_gz_bridge"
+        exec="parameter_bridge"
+        name="clock_bridge"
+        output="screen"
+        args="/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock"/>
     <!-- Start RViz -->
     <node if="$(var use_rviz)" pkg="rviz2" exec="rviz2" args="-d $(var rviz_config_path)" />
 </launch>
